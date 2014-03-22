@@ -2,4 +2,4 @@
 Host github.com
   User git
   Hostname github.com
-  UserKnownHostsFile ~/.ssh/hosts/github
+  UserKnownHostsFile ~/.ssh/known_hosts/github
