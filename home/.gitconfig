@@ -1,0 +1,134 @@
+#
+#  ~/.gitconfig
+#
+#  Author: Alex Howells <alex@howells.me>
+#  Copyright (c) 2014, Alex Howells
+#  Please see the LICENSE file in the repository root for further information.
+#
+[user]
+  name = Alex Howells
+  email = alex@howells.me
+
+[github]
+  user = agh
+
+[advice]
+  statusHints = false
+  pushNonFastForward = false
+
+[alias]
+  br = branch                                           # Quick Aliases
+  ci = commit
+  co = checkout
+  ls = ls-files
+  st = status
+  ksdiff = difftool -y -t Kaleidoscope                  # Kaleidoscope
+  stat = log --stat                                     # Handy Log Outputs
+  graph = log --pretty=oneline --graph --abbrev-commit
+
+[color]                                                 # Colours
+  branch = auto                                         # Wherever possible then we
+  diff = auto                                           # want these to be turned on.
+  grep = auto
+  interactive = auto
+  showbranch = auto
+  status = auto
+  ui = auto
+
+[color "branch"]                                        # 'git branch'
+  current = green                                       # Custom Colour Scheme
+  local = yellow
+  remote = red
+
+[color "diff"]                                          # 'git diff'
+  frag = cyan bold                                      # Custom Colour Scheme
+  meta = yellow bold
+  new = green bold
+  old = red bold
+  whitespace = red reverse
+
+[color "grep"]                                          # 'git grep'
+  match = green                                         # Custom Colour Scheme
+
+[color "status"]                                        # 'git status'
+  added = yellow                                        # Custom Colour Scheme
+  branch = magenta
+  changed = green
+  untracked = cyan
+
+# Not using a fully qualified path to binaries here is intentional.
+# Allows us to 'brew install' stuff on OSX and then PATH will prefer 
+# /usr/local/bin whilst avoiding breaking Linux where we use /usr/bin.
+[core]
+  autocrlf = input
+  excludesfile = .gitconfig.d/gitignore
+  editor = nano
+  pager = less
+
+[diff]
+  renames = copies
+
+[difftool]
+  prompt = false
+
+[difftool "Kaleidoscope"]
+  cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+
+[format]
+  pretty = medium
+
+[hub]
+  protocol = https
+
+[i18n]
+  commitEncoding = utf8
+  logOutputEncoding = utf8
+
+[log]
+  date = local  
+  decorate = short
+
+[merge]
+  log = true
+  stat = true
+
+[pack]
+  threads = 0                                           # Auto-detect and set accordingly.
+
+[push]
+  default = tracking
+
+[rerere]
+  enabled = true
+  autoupdate = true
+
+#
+#  Shortcuts
+#  Gives quick access to GitHub and Gists via a URL rewrite.
+#   Examples: `git clone gh:opscode/chef`
+#             `git clone gist:123456`
+#
+[url "git@github.com:"]
+  insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+  insteadOf = "gist:"
+
+#
+#  Includes
+#
+#  For today this largely only works where you installed Git manually.
+#  [include] requires git 1.7.10 (or later) and this is uncommon on
+#  older systems including Ubuntu 12.04 LTS and OSX Mountain Lion.
+#
+#  If you're running OSX Mavericks or Ubuntu 14.04 this works fine.
+#
+#  Note also that if one of these is missing, git does not complain.
+#  This is my technique for splitting out private / sensitive info,
+#  whilst still being able to keep most things in public.
+#
+#  Each of these corresponds to a private dotfiles repository,
+#  so .gitconfig.d/aeode should live within `dotfiles-private`.
+#
+[include]
+  path = .gitconfig.d/private
