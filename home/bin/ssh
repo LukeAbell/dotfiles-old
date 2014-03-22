@@ -7,7 +7,7 @@
 #  different dotfiles repositories together, using a temporary file, then passes
 #  the result into the real OpenSSH client via `ssh -F`.
 #
-#  Relies on ~/bin being in your PATH  before /usr/bin to function.
+#  Relies on ~/bin being in your PATH before /usr/bin to function.
 #
 #  Is a hack to work around the fact OpenSSH only respects `ssh -F` once.
 #
