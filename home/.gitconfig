@@ -128,7 +128,7 @@
 #  whilst still being able to keep most things in public.
 #
 #  Each of these corresponds to a private dotfiles repository,
-#  so .gitconfig.d/aeode should live within `dotfiles-private`.
+#  so .gitconfig.d/private should live within `dotfiles-private`.
 #
 [include]
   path = .gitconfig.d/private
