@@ -1,0 +1,8 @@
+#
+#  ~/.digrc
+#
+#  Author: Alex Howells <alex@howells.me>
+#  Copyright (c) 2014, Alex Howells
+#  Please see the LICENSE file in the repository root for further information.
+#
++search +cmd +recurse +stats +authority +additional
