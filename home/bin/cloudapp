@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+#
+# cloudapp
+# Originally written by Zach Holman / @holman
+# Upgrade to support multiple files by @xpaulbettsx
+#
+
+require 'rubygems'
+
+['json', 'cloudapp_api'].each do |gem|
+  begin
+    require gem
+  rescue LoadError
+    puts "You need to install #{gem}: gem install #{gem}"
+    exit!(1)
+  end
+end
+
+config_file = "#{ENV['HOME']}/.cloudapp"
+unless File.exist?(config_file)
+  puts "You need to type your email and password (one per line) into "+
+       "`~/.cloudapp`"
+  exit!(1)
+end
+
+email,password = File.read(config_file).split("\n")
+
+class HTTParty::Response
+  # Apparently HTTPOK.ok? IS NOT OKAY WTFFFFFFFFFFUUUUUUUUUUUUUU
+  # LETS MONKEY PATCH IT I FEEL OKAY ABOUT IT
+  def ok? ; true end
+end
+
+if ARGV[0].nil?
+   puts "You need to specify a file to upload."
+   exit!(1)
+end
+
+urls = []
+ARGV.each do |x|
+  CloudApp.authenticate(email,password)
+  puts "Attempting to upload #{x}"
+  url = CloudApp::Item.create(:upload, {:file => x}).url
+
+  # Say it for good measure.
+  puts "Uploaded #{x} to #{url}"
+
+  # Get the embed link.
+  url = "#{url}/#{ARGV[0].split('/').last}"
+  urls << url
+end
