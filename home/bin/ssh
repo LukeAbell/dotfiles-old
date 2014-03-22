@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+#  ~/bin/ssh
+#
+#  Uses PATH precedence to wrap `ssh` invocation for the purposes of merging
+#  multiple "per-user configuration files" (ssh_config) which are stored in
+#  different dotfiles repositories together, using a temporary file, then passes
+#  the result into the real OpenSSH client via `ssh -F`.
+#
+#  Relies on ~/bin being in your PATH  before /usr/bin to function.
+#
+#  Is a hack to work around the fact OpenSSH only respects `ssh -F` once.
+#
+#    ➜  ssh -F public -F private publichost -v
+#    OpenSSH_6.2p2, OSSLShim 0.9.8r 8 Dec 2011
+#    debug1: Reading configuration data private
+#    ssh: Could not resolve hostname publichost: nodename nor servname provided, or not known
+#
+#  Expects to find ~/.ssh/config exists and will use that to start things off,
+#  and then will look in ~/.ssh/config.d for further configuration files.
+#  Does not consider the lack of ~/.ssh/config.d to be a fatal problem.
+#
+#  For me this is primarily useful to split out 'Host' statements cleanly.
+#
+#  ~/.ssh/config.d/personal contains:
+#
+#    Host foo
+#      User sheep
+#      Hostname foo.baa.farmhouse.com
+#      UserKnownHostsFile ~/.ssh/known_hosts/personal
+#
+#  ~/.ssh/config.d/work contains:
+#
+#    Host bastion
+#      User ahowells
+#      Hostname bastion.corp.work.tld
+#      UserKnownHostsFile ~/.ssh/known_hosts/work
+#
+#  Author: Alex Howells <alex@howells.me>
+#  Copyright (c) 2014, Alex Howells
+#  Please see the LICENSE file in the repository root for further information.
+#
+PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+TEMP_FILE="/tmp/$(basename $0)_confcat.$$.tmp"
+
+if [ -d "$HOME/.ssh" ]; then
+  if [ -d "$HOME/.ssh/config.d" ]; then
+    cat $HOME/.ssh/config $HOME/.ssh/config.d/* >"$TEMP_FILE" 2>/dev/null
+    ssh -F $TEMP_FILE $@
+    rm $TEMP_FILE 2>/dev/null
+  else
+    ssh $@
+  fi
+else
+  ssh $@
+fi
