@@ -2,3 +2,4 @@ bin
 .gitconfig.d
 .ssh
 .ssh/config.d
+.ssh/keys
