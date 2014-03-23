@@ -1,0 +1,44 @@
+#
+#  Homebrew / OSX Package Installation
+#
+#  Author: Alex Howells <alex@howells.me>
+#  Copyright (c) 2014, Alex Howells
+#  Please see the LICENSE file in the repository root for further information.
+#
+
+# Make sure that we're usin the latest Homebrew (http://brew.sh)
+update
+
+# Bring any formulae which are installed up to date.
+upgrade
+
+#
+# Package Installs
+#
+install bash
+install bash-completion
+install fish
+install fping
+install git
+install hub
+install mobile-shell
+install mtr
+install nmap
+install p7zip
+install packer
+install percona-server
+install pwgen
+install redis
+install ssldump
+install sslscan
+install tcptraceroute
+install tree
+install unrar
+install wget --enable-iri
+install zmap
+
+# This essentially "chainloads" in all the Homebrew Cask stuff to avoid cluttering this file.
+bundle Caskfile
+
+# Remove outdated versions
+cleanup
