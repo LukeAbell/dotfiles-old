@@ -24,6 +24,7 @@ install hub
 install mobile-shell
 install mtr
 install nmap
+install node
 install p7zip
 install packer
 install percona-server
@@ -36,6 +37,9 @@ install tree
 install unrar
 install wget --enable-iri
 install zmap
+
+# Duplicates with OSX system packages
+install homebrew/dupes/openssh
 
 # This essentially "chainloads" in all the Homebrew Cask stuff to avoid cluttering this file.
 bundle Caskfile
