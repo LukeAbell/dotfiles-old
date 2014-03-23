@@ -8,6 +8,7 @@
 [user]
   name = Alex Howells
   email = alex@howells.me
+  signingkey = 8E72F89A
 
 [github]
   user = agh
@@ -20,11 +21,12 @@
   br = branch                                           # Quick Aliases
   ci = commit
   co = checkout
+  graph = log --pretty=oneline --graph --abbrev-commit
+  ksdiff = difftool -y -t Kaleidoscope                  # Kaleidoscope
+  logss = log --show-signature
   ls = ls-files
   st = status
-  ksdiff = difftool -y -t Kaleidoscope                  # Kaleidoscope
   stat = log --stat                                     # Handy Log Outputs
-  graph = log --pretty=oneline --graph --abbrev-commit
 
 [color]                                                 # Colours
   branch = auto                                         # Wherever possible then we
