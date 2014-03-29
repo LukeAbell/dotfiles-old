@@ -1,4 +1,5 @@
 bin
+.irssi
 .gitconfig.d
 .ssh
 .ssh/config.d
