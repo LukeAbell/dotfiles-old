@@ -46,11 +46,11 @@ TEMP_FILE="/tmp/$(basename $0)_confcat.$$.tmp"
 if [ -d "$HOME/.ssh" ]; then
   if [ -d "$HOME/.ssh/config.d" ]; then
     cat $HOME/.ssh/config $HOME/.ssh/config.d/* >"$TEMP_FILE" 2>/dev/null
-    ssh -F $TEMP_FILE $@
+    ssh -F $TEMP_FILE "$@"
     rm $TEMP_FILE 2>/dev/null
   else
-    ssh $@
+    ssh "$@"
   fi
 else
-  ssh $@
+  ssh "$@"
 fi
