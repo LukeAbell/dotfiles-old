@@ -26,6 +26,7 @@ cask alfred link
 cask install adium
 cask install airdisplay
 cask install airparrot
+cask install atom
 cask install authy-bluetooth
 cask install bartender
 cask install boxcryptor-classic
