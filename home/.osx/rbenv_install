@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# With the assumption `rbenv` is not on the system, we want to install it.
+# Warning: Almost certainly not safe to run on a system with rbenv installed.
+#          Also makes nasty assumptions that Bash is your shell, etc.
+#
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone https://github.com/sstephenson/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
+git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+git clone https://github.com/sstephenson/rbenv-default-gems.git ~/.rbenv/plugins/rbenv-default-gems
+
+git clone https://github.com/chriseppstein/rbenv-each.git ~/.rbenv/plugins/rbenv-each
+git clone https://github.com/rkh/rbenv-update.git ~/.rbenv/plugins/rbenv-update
+git clone https://github.com/ianheggie/rbenv-binstubs.git ~/.rbenv/plugins/rbenv-binstubs
+
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+
+echo "bundler" >> ~/.rbenv/default-gems
+
+echo "Everything should be installed, and you can now restart the shell and `rbenv install 2.1.0`."
