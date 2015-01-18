@@ -1,29 +1,50 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh         # oh-my-zsh Install Path
+ZSH_CUSTOM=$HOME/.zsh-custom        # oh-my-zsh Custom Path
+export UPDATE_ZSH_DAYS=30           # Auto-Update Interval
 
-# Theme
-# ~/.oh-my-zsh/themes/
-ZSH_THEME="agnoster"
+COMPLETION_WAITING_DOTS="true"      # Display red dots whilst waiting for completion.
+HIST_STAMPS="yyyy-mm-dd"            # Timestamp Format
 
-# Auto-Update Interval
-export UPDATE_ZSH_DAYS=6
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Timestamp Format
-HIST_STAMPS="yyyy-mm-dd"
-
-# oh-my-zsh Custom Folder
-ZSH_CUSTOM=$HOME/.zsh-custom
-
+#
 # Plugins
-plugins=(git zsh-syntax-highlighting)
+#
+plugins=( 
+  zsh-syntax-highlighting           # This should be loaded first. Other stuff uses it.
+  aws
+  brew
+  bundler
+  cap
+  colored-man
+  dirhistory
+  extract
+  gem 
+  git 
+  git-extras
+  github 
+  heroku 
+  history-substring-search
+  jsontools
+  knife
+  mosh
+  rails
+  rake-fast
+  rbenv
+  redis-cli
+  themes
+  tmux
+  vagrant 
+  zsh_reload
+)
 
-source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh            # Let's get this party started. Loading ahoy!
 
-# ---------------          User Configuration          ---------------
+theme random                        # Themes
+                                    # Look in ~/.oh-my-zsh/themes or ~/.zsh-custom/themes
 
+#
+# User Configuration
+# Anything which isn't overly specific to zsh should live down yonder.
+#
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export MANPATH="/usr/local/man:$MANPATH"
 
@@ -35,18 +56,3 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='atom'
 fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
