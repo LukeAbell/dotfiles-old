@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+#  ~/bin/rbenv_installer
+#
+#  Beginning with the assumption that `rbenv` is not installed,
+#  let's go ahead and install it with a useful set of plugins.
+#
+#  Author: Alex Howells <alex@howells.me>
+#  Copyright (c) 2014, Alex Howells
+#  Please see the LICENSE file in the repository root for further information.
+#
+SYSTEM_VERSION="2.2.0"                    # What version of Ruby to install?
+
+[ -z "$RBENV_ROOT" ] && export RBENV_ROOT="$HOME/.rbenv"
+if [ ! -f "$RBENV_ROOT/bin/rbenv" ]; then
+
+  git clone https://github.com/sstephenson/rbenv.git $RBENV_ROOT
+
+  # Ensure we have a directory to stash all the plugins in.
+  mkdir -p "$RBENV_ROOT/plugins"
+
+  # Plugins by @sstephenson.
+  git clone https://github.com/sstephenson/ruby-build.git $RBENV_ROOT/plugins/ruby-build
+  git clone https://github.com/sstephenson/rbenv-vars.git $RBENV_ROOT/plugins/rbenv-vars
+  git clone https://github.com/sstephenson/rbenv-gem-rehash.git $RBENV_ROOT/plugins/rbenv-gem-rehash
+  git clone https://github.com/sstephenson/rbenv-default-gems.git $RBENV_ROOT/plugins/rbenv-default-gems
+
+  # Plugins by other people...
+  git clone https://github.com/chriseppstein/rbenv-each.git $RBENV_ROOT/plugins/rbenv-each
+  git clone https://github.com/rkh/rbenv-update.git $RBENV_ROOT/plugins/rbenv-update
+  git clone https://github.com/ianheggie/rbenv-binstubs.git $RBENV_ROOT/plugins/rbenv-binstubs
+
+  # We pretty much always want Bundler, with every Ruby version.
+  echo "bundler" >> $RBENV_ROOT/default-gems
+
+  # Install whatever Ruby we want as the system interpreter.
+  # Should be done as a subshell to ensure we 
+  ($RBENV_ROOT/bin/rbenv install $SYSTEM_VERSION && \
+   $RBENV_ROOT/bin/rbenv global $SYSTEM_VERSION)
+
+  # We're done - congratulations.
+  echo "rbenv_installer: Everything should be working. You've got Ruby!"
+  exit 0
+else
+  echo "rbenv_installer: Detected an existing install of rbenv, quitting!"
+  exit 1
+fi
