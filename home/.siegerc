@@ -1,0 +1,27 @@
+# Updated by Siege 3.0.7, November-18-2014
+# Copyright 2000-2013 by Jeffrey Fulmer, et al.
+# Look for me (with comments!) in /usr/local/Cellar/siege/3.0.7_1/etc/siegerc
+
+verbose = true
+quiet = false
+timestamp = true
+
+show-logfile = false
+logging = true
+logfile = ${LOGFILE}
+
+gmethod = HEAD
+protocol = HTTP/1.1
+chunked = true
+cache = true
+cache = false
+connection = close
+
+concurrent = 50
+time = 15M
+delay = 1
+internet = true
+benchmark = false
+user-agent = Siege
+accept-encoding = gzip
+url-escaping = true
