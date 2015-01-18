@@ -24,7 +24,7 @@ plugins+=(
   dirhistory extract gem git git-extras
   github heroku history-substring-search
   jsontools knife mosh rails rake-fast
-  redis-cli themes tmux vagrant 
+  rbenv redis-cli themes tmux vagrant 
   zsh_reload
 )
 
