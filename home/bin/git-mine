@@ -1,0 +1,3 @@
+# Show only my commits log with dates
+# Credits: https://github.com/maxim/dotfiles
+git log --pretty=format:"%h | %ad %s" --date=local --date-order --author="$(git config user.name)"
