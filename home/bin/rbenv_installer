@@ -15,7 +15,7 @@ SYSTEM_VERSION="2.2.0"                    # What's the preferred version of Ruby
 ALTERNATE_VERSIONS="1.9.3-p551 2.0.0-p598 2.1.5"
 
 # What gems can't we live without?
-DEFAULT_GEMS="awesome_print bundler pry"
+DEFAULT_GEMS="awesome_print bundler pry pry-nav pry-rescue pry-stack_explorer"
 
 [ -z "$RBENV_ROOT" ] && export RBENV_ROOT="$HOME/.rbenv"
 if [ ! -f "$RBENV_ROOT/bin/rbenv" ]; then
