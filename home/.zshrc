@@ -30,7 +30,7 @@ plugins+=(
 
 source $ZSH/oh-my-zsh.sh                  # Let's get this party started. Loading ahoy!
 
-theme random                              # Themes
+theme fino                                # Themes
                                           # Look in ~/.oh-my-zsh/themes or ~/.zsh-custom/themes
 
 #
