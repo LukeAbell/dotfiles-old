@@ -5,9 +5,11 @@
 #  Copyright (c) 2014, Alex Howells
 #  Please see the LICENSE file in the repository root for further information.
 #
-:update_sources: true
-:benchmark: false
-:bulk_threshold: 1000
 :verbose: true
+:update_sources: true
+:sources:
+- https://rubygems.org
+:benchmark: false
 :backtrace: false
+:bulk_threshold: 1000
 gem: --no-ri --no-rdoc
