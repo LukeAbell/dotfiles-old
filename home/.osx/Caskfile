@@ -23,6 +23,7 @@ cask alfred link
 #
 # Application Installs
 #
+cask install 1password
 cask install adium
 cask install airdisplay
 cask install airparrot
@@ -57,7 +58,6 @@ cask install kindle
 cask install little-snitch
 cask install macupdate-desktop
 cask install mplayerx
-cask install onepassword
 cask install osxfuse
 cask install plex-media-server
 cask install plex-home-theater
