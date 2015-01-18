@@ -9,7 +9,10 @@
 #  Copyright (c) 2014, Alex Howells
 #  Please see the LICENSE file in the repository root for further information.
 #
-SYSTEM_VERSION="2.2.0"                    # What version of Ruby to install?
+SYSTEM_VERSION="2.2.0"                    # What's the preferred version of Ruby?
+
+# What other versions of Ruby do we want to load?
+ALTERNATE_VERSIONS="1.9.3-p551 2.0.0-p598 2.1.5"
 
 [ -z "$RBENV_ROOT" ] && export RBENV_ROOT="$HOME/.rbenv"
 if [ ! -f "$RBENV_ROOT/bin/rbenv" ]; then
@@ -26,22 +29,35 @@ if [ ! -f "$RBENV_ROOT/bin/rbenv" ]; then
   git clone https://github.com/sstephenson/rbenv-default-gems.git $RBENV_ROOT/plugins/rbenv-default-gems
 
   # Plugins by other people...
-  git clone https://github.com/chriseppstein/rbenv-each.git $RBENV_ROOT/plugins/rbenv-each
-  git clone https://github.com/rkh/rbenv-update.git $RBENV_ROOT/plugins/rbenv-update
   git clone https://github.com/ianheggie/rbenv-binstubs.git $RBENV_ROOT/plugins/rbenv-binstubs
+  git clone https://github.com/tpope/rbenv-ctags $RBENV_ROOT/plugins/rbenv-ctags
+  git clone https://github.com/chriseppstein/rbenv-each.git $RBENV_ROOT/plugins/rbenv-each
+  git clone https://github.com/ianheggie/rbenv-env.git $RBENV_ROOT/plugins/rbenv-env
+  git clone https://github.com/rkh/rbenv-update.git $RBENV_ROOT/plugins/rbenv-update
 
-  # We pretty much always want Bundler, with every Ruby version.
+  # We pretty much always want these, with every Ruby version.
+  echo "gem-ctags" > $RBENV_ROOT/default-gems
   echo "bundler" >> $RBENV_ROOT/default-gems
 
   # Install whatever Ruby we want as the system interpreter.
-  # Should be done as a subshell to ensure we 
   ($RBENV_ROOT/bin/rbenv install $SYSTEM_VERSION && \
    $RBENV_ROOT/bin/rbenv global $SYSTEM_VERSION)
 
+  for version in $ALTERNATE_VERSIONS; do
+    ($RBENV_ROOT/bin/rbenv install $version)
+  done
+
   # We're done - congratulations.
-  echo "rbenv_installer: Everything should be working. You've got Ruby!"
-  exit 0
+  echo "rbenv_installer: Everything should be working - awesome!" && exit 0
 else
-  echo "rbenv_installer: Detected an existing install of rbenv, quitting!"
-  exit 1
+  echo "rbenv_installer: Detected an existing install of rbenv..."
+
+  # If we detect the rbenv-update plugin is installed, let's just do an update?
+  if [ -d "$RBENV_ROOT/plugins/rbenv-update" ]; then
+    ($RBENV_ROOT/bin/rbenv update)
+    echo "rbenv_installer: Performed an update of all your components instead of an install." && exit 0
+  else
+    # It's likely that rbenv_installer wasn't used to set things up, so let's bail.
+    echo "rbenv_installer: This install isn't in an expected state. Quitting." && exit 1
+  fi
 fi
