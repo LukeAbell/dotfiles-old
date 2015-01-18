@@ -87,7 +87,7 @@
   logOutputEncoding = utf8
 
 [init]
-  templatedir = .gitconfig.d/template
+  templatedir = ~/.gitconfig.d/template
 
 [log]
   date = local  
