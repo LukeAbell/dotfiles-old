@@ -1,87 +1,193 @@
-#!/bin/sh
-##########################################################################
-# Shellscript:	timeout - set timeout for a command
-# Author     :	Heiner Steven <heiner.steven@odn.de>
-# Date       :	29.07.1999
-# Category   :	File Utilities
-# Requires   :	
-# SCCS-Id.   :	@(#) timeout	1.3 03/03/18
-##########################################################################
-# Description
-#    o	Runs a command, and terminates it (by sending a signal) after
-#	a specified time period
-#    o	This command first starts itself as a "watchdog" process in the
-#	background, and then runs the specified command.
-#	If the command did not terminate after the specified
-#	number of seconds, the "watchdog" process will terminate
-#	the command by sending a signal.
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+timeout - Run a command and kill it after the given period.
+
+=cut
+
+
+=head1 SYNOPSIS
+
+  General Options:
+
+   --timeout   Specify the maximum execution time.
+   --help      Show the help information for this script.
+   --verbose   Show useful debugging information.
+
+=cut
+
+
+=head1 ABOUT
+
+This command will allow you to run a subcommand and terminate
+that after the given time.
+
+You may specify the timeout period in either seconds, minutes and
+seconds, or hours, minutes and seconds.  For example:
+
+=for example begin
+
+    # kill after 32 seconds
+    timeout -t 32 top
+
+    # kill after two minutes, five seconds
+    timeout -t 2:5 top
+
+    # kill after six hour, five minutes, and two seconds.
+    timeout -t 6:5:2 top
+
+=for example end
+
+The timeout period is mandatory and has no default.
+
+=cut
+
+=head1 AUTHOR
+
+ Steve
+ --
+ http://www.steve.org.uk/
+
+=cut
+
+
+=head1 LICENSE
+
+Copyright (c) 2013 by Steve Kemp.  All rights reserved.
+
+This script is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+The LICENSE file contains the full text of the license.
+
+=cut
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+
+
 #
-# Notes
-#    o	Uses the internal command line argument "-p" to specify the
-#	PID of the process to terminate after the timeout to the
-#	"watchdog" process.
-#    o	The "watchdog" process is invoked by the name "$0", so
-#	"$0" must be a valid path to the script.
-#    o	If this script runs in the environment of the login shell
-#	(i.e. it was invoked using ". timeout command...") it will
-#	terminate the login session.
-##########################################################################
+#  Get the options, either defaults or from the command line.
+#
+my %config = parsedOptions();
 
-PN=`basename "$0"`			# Program name
-VER='1.3'
-
-TIMEOUT=5				# Default [seconds]
-
-Usage () {
-    echo >&2 "$PN - set timeout for a command, $VER
-usage: $PN [-t timeout] command [argument ...]
-     -t: timeout (in seconds, default is $TIMEOUT)"
-    exit 1
+#
+#  Ensure we have a timeotut
+#
+if ( !$config{ 'timeout' } )
+{
+    print "Please specify a timeout.\n";
+    exit(2);
 }
 
-Msg () {
-    for MsgLine
-    do echo "$PN: $MsgLine" >&2
-    done
+#
+#  If we're being verbose..
+#
+if ( $config{ 'verbose' } )
+{
+    print "Running command: " . join( " ", @ARGV ) . "\n";
+    print "Max executiong time " . $config{ 'timeout' } . " seconds\n";
+
 }
 
-Fatal () { Msg "$@"; exit 1; }
+#
+#  Call the command we were given, with our timeout.
+#
+timed_system( $config{ 'timeout' }, @ARGV );
 
-while [ $# -gt 0 ]
-do
-    case "$1" in
-	-p)	ParentPID=$2; shift;;	# Used internally!
-	-t)	Timeout="$2"; shift;;
-	--)	shift; break;;
-	-h)	Usage;;
-	-*)	Usage;;
-	*)	break;;			# First file name
-    esac
-    shift
-done
+#
+# All done.
+#
+exit(0);
 
-: ${Timeout:=$TIMEOUT}			# Set default [seconds]
 
-if [ -z "$ParentPID" ]
-then
-    # This is the first invokation of this script.
-    # Start "watchdog" process, and then run the command.
-    [ $# -lt 1 ] && Fatal "please specify a command to execute"
-    "$0" -p $$ -t $Timeout &		# Start watchdog
-    #echo >&2 "DEBUG: process id is $$"
-    exec "$@"				# Run command
-    exit 2				# NOT REACHED
-else
-    # We run in "watchdog" mode, $ParentPID contains the PID
-    # of the process we should terminate after $Timeout seconds.
-    [ $# -ne 0 ] && Fatal "please do not use -p option interactively"
+sub timed_system
+{
+    my $time = shift;
+    my $pid;
 
-    #echo >&2 "DEBUG: $$: parent PID to terminate is $ParentPID"
+    local $SIG{ ALRM } = sub {
+        kill 15, $pid or die "kill: $!";
+        die "Timeout!";
+    };    # Just SIGTERM.
+    eval {
+        $pid = fork;
+        die "Fork failed: $!" unless defined $pid;
+        unless ($pid)
+        {
+            exec @_;
+            die "Exec failed: $!";
+        }
+        alarm $time;
+        waitpid $pid => 0;
+    };
+    die $@ if $@ && $@ !~ /^Timeout!/;
+}
 
-    exec >/dev/null 0<&1 2>&1	# Suppress error messages
-    sleep $Timeout
-    kill $ParentPID &&			# Give process time to terminate
-    	(sleep 2; kill -1 $ParentPID) &&
-	(sleep 2; kill -9 $ParentPID)
-    exit 0
-fi
+
+
+=begin doc
+
+Parse the command line options (minimal!)
+
+=end doc
+
+=cut
+
+sub parsedOptions
+{
+    my %vars;
+
+    exit
+      if (
+           !GetOptions( "help"      => \$vars{ 'help' },
+                        "timeout=s" => \$vars{ 'timeout' },
+                        "verbose"   => \$vars{ 'verbose' } ) );
+
+    pod2usage(1) if ( $vars{ 'help' } );
+
+    if ( !$vars{ 'timeout' } )
+    {
+        print "Please specify a timeout\n";
+        exit(2);
+    }
+
+
+    #
+    #  HH:MM:SS
+    #
+    if ( $vars{ 'timeout' } =~ /^([0-9]+):([0-9]+):([0-9]+)$/ )
+    {
+        my $sec = $3 + ( 60 * $2 ) + ( 60 * 60 * $1 );
+        $vars{ 'timeout' } = $sec;
+    }
+    elsif ( $vars{ 'timeout' } =~ /^([0-9]+):([0-9]+)$/ )
+    {
+
+        #
+        # MM:SS
+        #
+        my $sec = $2 + ( 60 * $1 );
+        $vars{ 'timeout' } = $sec;
+    }
+    elsif ( $vars{ 'timeout' } =~ /^([0-9]+)$/ )
+    {
+
+        #
+        #  SS
+        #
+    }
+    else
+    {
+        print "Invalid timeout specification\n";
+        exit(2);
+    }
+
+    return (%vars);
+
+}
