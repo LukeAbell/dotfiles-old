@@ -12,6 +12,7 @@ HIST_STAMPS="yyyy-mm-dd"                  # Timestamp Format
 #
 plugins=(
   zsh-syntax-highlighting                 # This has to be loaded first. Other stuff uses it.
+  zsh-completions
 )
 
 #
