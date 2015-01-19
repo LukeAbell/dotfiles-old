@@ -1,8 +1,8 @@
-[submodule "zsh-syntax-highlighting"]
-	path = home/.zsh-custom/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
-	branch = master
 [submodule "zsh-completions"]
 	path = home/.zsh-custom/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
+	branch = master
+[submodule "zsh-syntax-highlighting"]
+	path = home/.zsh-custom/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
 	branch = master
