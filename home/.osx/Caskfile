@@ -24,8 +24,8 @@ cask alfred link
 # Application Installs
 #
 cask install 1password
+cask install acorn
 cask install adium
-cask install airdisplay
 cask install airparrot
 cask install atom
 cask install authy-bluetooth
@@ -33,10 +33,11 @@ cask install bartender
 cask install boxcryptor-classic
 cask install caffeine
 cask install ccleaner
-cask install cloud
+cask install chicken
 cask install daisydisk
 cask install dash
 cask install dropbox
+cask install droplr
 cask install evernote
 cask install firefox
 cask install flash
@@ -51,19 +52,16 @@ cask install hyperdock
 cask install iphone-configuration-utility
 cask install istat-menus
 cask install iterm2
+cask install java6
 cask install java7
-cask install jawbone-updater
 cask install kaleidoscope
 cask install kindle
 cask install little-snitch
-cask install macupdate-desktop
 cask install mplayerx
 cask install osxfuse
 cask install plex-media-server
 cask install plex-home-theater
 cask install prolific-usb-serial-driver
-cask install reflector
-cask install remote-desktop-connection
 cask install shimo
 cask install silverlight
 cask install skype
@@ -72,27 +70,19 @@ cask install sonos
 cask install steam
 cask install the-unarchiver
 cask install tinkertool
+cask install torbrowser
 cask install totalfinder
+cask install totalspaces
 cask install transmission
 cask install vagrant
 cask install vlc
+cask insatll vmware-fusion
+cask install xscope
 cask install yubikey-personalization-gui
-
-# Disabled because Yosemite requires Fusion TP2014
-#cask install vmware-fusion
-#cask install torbrowserbundle
 
 #
 # Things which don't seem to have a way to get installed via this route -
 #  * WiFiSpoof
-#
-
-#
-# Stuff which I need to investigate -
-#  * SABnzbd
-#  * CouchPotato
-#  * Sickbeard
-# This likely wants to run on a home server, not a laptop.
 #
 
 # Remove outdated versions
